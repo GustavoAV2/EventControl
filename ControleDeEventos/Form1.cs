@@ -162,20 +162,77 @@ namespace ControleDeEventos
 
         private void button1_Click(object sender, EventArgs e)
         {
+            bool validate = true;
             Client[] listClients;
+
             if (Client2.Name.Length > 0)
-            { listClients = new Client[] { Client1, Client2 }; }
+            {
+                validate = ValidateClient(Client2);
+                listClients = new Client[] { Client1, Client2 }; 
+            }
             else
             { listClients = new Client[] { Client1 }; }
 
-            if (Action.GetEventsByDate(Event.DateOfEvent).Count < 1)
+            if (validate)
             {
-                Event.SetClients(listClients);
-                Action.InsertEvent(Event);
-                MessageBox.Show("Evento Cadastrado!");
+                if (ValidateClient(Client1) && ValidateEvent(Event))
+                {
+                    if (Action.GetEventsByDate(Event.DateOfEvent).Count == 0 && validate)
+                    {
+                        Event.SetClients(listClients);
+                        Action.InsertEvent(Event);
+                        MessageBox.Show("Evento Cadastrado!");
+                    }
+                    else
+                    {  MessageBox.Show("Já existe um evento cadastrado nesta DATA!"); }
+                }
             }
-            else
-            {  MessageBox.Show("Já existe um evento cadastrado nesta data!"); }
+        }
+        private bool ValidateEvent(Events _event)
+        {
+            if (!Validations.ValidateDate(_event.DateOfEvent))
+            {
+                MessageBox.Show("DATA DO EVENTO invalida!\n A data é anterior ao dia de hoje.");
+                return false;
+            }
+            else if (!Validations.ValidateName(_event.Local))
+            {
+                MessageBox.Show("LOCAL DO EVENTO invalido!\n Preencha e não utilize caracteres especiais.");
+                return false;
+            }
+            else if (_event.Signal < 1 | _event.Price < 1)
+            {
+                MessageBox.Show("O SINAL e o VALOR não podem ser nulos!");
+                return false;
+            }
+            return true;
+        }
+        private bool ValidateClient(Client client)
+        {
+            if (!Validations.ValidateName(client.Name))
+            {
+                MessageBox.Show("NOME invalido!\n Preencha e não utilize caracteres especiais.");
+                return false;
+            }
+
+            if (client.Email.Length > 0)
+            {
+                if (!Validations.ValidateEmail(client.Email))
+                {
+                    MessageBox.Show("E-MAIL invalido!\n Verifique a ortografia do e-mail.");
+                    return false;
+                }
+            }
+
+            if (client.Phone.Length > 0)
+            {
+                //else if (!Validations.ValidatePhoneNumber(client.Phone))
+                //{
+                //    MessageBox.Show("Telefone invalido!\n Verifique a ortografia do e-mail.");
+                //    return false;
+                //}
+            }
+            return true;
         }
 
         private void textBox5_TextChanged(object sender, EventArgs e)
@@ -353,8 +410,13 @@ namespace ControleDeEventos
             dialog.Multiselect = false; // allow/deny user to upload more than one file at a time
             if (dialog.ShowDialog() == DialogResult.OK) // if user clicked OK
             {
-                Event.PathFile = dialog.FileName; // get name of file
-                textPathFile.Text = Event.PathFile;
+                if (Validations.ValidatTypeFile(dialog.FileName))
+                {
+                    Event.PathFile = dialog.FileName; // get name of file
+                    textPathFile.Text = Event.PathFile;
+                }
+                else
+                { MessageBox.Show("O arquivo deve ser do tipo Excel ou PDF."); }
             }
         }
 

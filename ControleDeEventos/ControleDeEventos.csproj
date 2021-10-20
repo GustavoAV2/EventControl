@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Actions.cs" />
+    <Compile Include="Controllers\Validations.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Services\FileServices.cs" />
     <Compile Include="Controllers\Controller.cs" />

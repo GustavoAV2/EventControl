@@ -35,13 +35,7 @@ namespace ControleDeEventos
             int EventID = GetEventsByDate(_event.DateOfEvent)[0].ID;
 
             if (_event.PathFile.Length > 0)
-            {
-                string NameFile = System.IO.Path.GetFileName(_event.PathFile);
-                string ext = NameFile.Split('.')[1];
-                string NewFileName = $"{EventID}_DocumentEvent.{ext}";
-                FileActions.TransferFile(_event.PathFile, NewFileName);
-                _event.PathFile = NewFileName;
-            }
+            { InsertEventFile(_event, EventID); }
 
             for (int i=0; i<_event.Clients.Count; i++ )
             { Control.InsertClient(_event.Clients[i], EventID); }
@@ -70,6 +64,14 @@ namespace ControleDeEventos
                 Control.DeleteClientById(_event.Clients[i].ID);
             }
             return ex;
+        }
+        public void InsertEventFile(Events _event, int id)
+        {
+            string NameFile = System.IO.Path.GetFileName(_event.PathFile);
+            string ext = NameFile.Split('.')[1];
+            string NewFileName = $"{id}_DocumentEvent.{ext}";
+            FileActions.TransferFile(_event.PathFile, NewFileName);
+            _event.PathFile = NewFileName;
         }
         public bool ExportEventFile(Events _event, string for_path)
         {

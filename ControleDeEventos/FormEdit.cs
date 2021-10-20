@@ -88,6 +88,46 @@ namespace ControleDeEventos
                 { MessageBox.Show("Não foi possível atualizar este evento!"); }
             }
         }
+        private bool ValidateEvent(Events _event)
+        {
+            if (!Validations.ValidateDate(_event.DateOfEvent))
+            {
+                MessageBox.Show("DATA DO EVENTO invalida!\n A data é anterior ao dia de hoje.");
+                return false;
+            }
+            else if (!Validations.ValidateName(_event.Local))
+            {
+                MessageBox.Show("LOCAL DO EVENTO invalido!\n Preencha e não utilize caracteres especiais.");
+                return false;
+            }
+            else if (_event.Signal < 1 | _event.Price < 1)
+            {
+                MessageBox.Show("O SINAL e o PREÇO não podem ser nulos!");
+                return false;
+            }
+            return true;
+        }
+        private bool ValidateClient(Client client)
+        {
+            if (!Validations.ValidateName(client.Name))
+            {
+                MessageBox.Show("NOME invalido!\n Preencha e não utilize caracteres especiais.");
+                return false;
+            }
+
+            if (client.Email.Length > 0)
+            {
+                if (!Validations.ValidateEmail(client.Email))
+                {
+                    MessageBox.Show("E-MAIL invalido!\n Verifique a ortografia do e-mail.");
+                    return false;
+                }
+            }
+
+            if (client.Phone.Length > 0)
+            { }
+            return true;
+        }
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
         {
             Event.DateOfEvent = dateTimePicker.Value;

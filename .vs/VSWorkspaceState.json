@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\ControleDeEventos"
+    "\\ControleDeEventos",
+    "\\ControleDeEventos\\Controllers"
   ],
   "SelectedNode": "\\ControleDeEventos.sln",
   "PreviewInSolutionExplorer": false
