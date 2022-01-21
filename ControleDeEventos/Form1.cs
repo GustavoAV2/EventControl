@@ -58,7 +58,7 @@ namespace ControleDeEventos
         }
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            Event.DateOfEvent = dateTimePicker.Value;
+            Event.DateOfEvent = dateTimePicker.Value.Date;
         }
 
         private void textHusband_TextChanged(object sender, EventArgs e)
@@ -236,39 +236,26 @@ namespace ControleDeEventos
         }
 
         private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-            Client1.Phone = textBox5.Text;
-        }
+        { Client1.Phone = textBox5.Text; }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
-        {
-            Client2.Email = textBox7.Text;
-        }
+        { Client2.Phone = textBox6.Text; }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
-        {
-            Client2.Phone = textBox6.Text;
-        }
+        { Client2.Email = textBox7.Text; }
 
         private void textHusband_TextChanged_1(object sender, EventArgs e)
-        {
-            Client1.Name = textHusband.Text;
-        }
+        { Client1.Name = textHusband.Text; }
 
         private void textWife_TextChanged_1(object sender, EventArgs e)
-        {
-            Client2.Name = textWife.Text;
-        }
+        { Client2.Name = textWife.Text; }
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e)
-        {
-            Event.DateOfEvent = dateTimePicker.Value.Date;
-        }
+        { Event.DateOfEvent = dateTimePicker.Value.Date; }
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
-        {
-            Event.Local = textBox1.Text;
-        }
+        { Event.Local = textBox1.Text; }
+
         private void tabPage2_Click(object sender, EventArgs e)
         {
             comboBoxSearch.SelectedIndex = 0;
@@ -311,17 +298,31 @@ namespace ControleDeEventos
             else
             { lblTypeOfEvent.Text = "Tipo do Evento: Festa"; }
 
+            if (_event.PathFile.Length > 0)
+            { linkLabel1.Visible = true; }
+            else { linkLabel1.Visible = false; }
+
             if (_event.Clients.Count > 0)
             {
                 lblClient1.Text = "Nome: " + _event.Clients[0].Name;
-                lblClient1Email.Text = "E-mail: " + _event.Clients[0].Email;
-                lblClient1Phone.Text = "Tel: " + _event.Clients[0].Phone;
+                if (_event.Clients[0].Email.Length > 0)
+                { lblClient1Email.Text = "E-mail: " + _event.Clients[0].Email; }
+                else { lblClient1Email.Text = "E-mail: Não cadastrado"; }
+
+                if (_event.Clients[0].Phone.Length > 0)
+                { lblClient1Phone.Text = "Tel: " + _event.Clients[0].Phone; }
+                else { lblClient1Phone.Text = "Tel: Não cadastrado"; }
 
                 if (_event.Clients.Count > 1)
                 {
                     lblClient2.Text = "Nome: " + _event.Clients[1].Name;
-                    lblClient2Email.Text = "E-mail: " + _event.Clients[1].Email;
-                    lblClient2Phone.Text = "Tel: " + _event.Clients[1].Phone;
+                    if (_event.Clients[1].Email.Length > 0)
+                    { lblClient2Email.Text = "E-mail: " + _event.Clients[1].Email; }
+                    else { lblClient2Email.Text = "E-mail: Não cadastrado"; }
+
+                    if (_event.Clients[1].Phone.Length > 0)
+                    { lblClient2Phone.Text = "Tel: " + _event.Clients[1].Phone; }
+                    else { lblClient2Phone.Text = "Tel: Não cadastrado"; }
                 }
                 else
                 {
@@ -361,9 +362,7 @@ namespace ControleDeEventos
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SearchInput(comboBoxSearch.SelectedItem.ToString());
-        }
+        { SearchInput(comboBoxSearch.SelectedItem.ToString()); }
 
         private void SearchInput(string search = "Todos")
         {
@@ -410,7 +409,8 @@ namespace ControleDeEventos
             dialog.Multiselect = false; // allow/deny user to upload more than one file at a time
             if (dialog.ShowDialog() == DialogResult.OK) // if user clicked OK
             {
-                if (Validations.ValidatTypeFile(dialog.FileName))
+                if (Validations.ValidatTypeFile(dialog.FileName) &&
+                    Validations.ValidatIfFileExists(dialog.FileName))
                 {
                     Event.PathFile = dialog.FileName; // get name of file
                     textPathFile.Text = Event.PathFile;
@@ -422,50 +422,55 @@ namespace ControleDeEventos
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
             Events _event = dataGridView1.SelectedRows[0].DataBoundItem as Events;
 
-            //define o titulo
-            dialog.Title = "Salvar Arquivo";
-
-            //Define as extensões permitidas
-            dialog.Filter = "All files (*.*)|*.*";
-            
-            //define o indice do filtro
-            dialog.FilterIndex = 0;
-
-            //Atribui um valor vazio ao nome do arquivo
-            string ext = _event.PathFile.Split('.')[1];
-            dialog.FileName = _event.Local.Replace(" ", "_").Trim() + $"_{DateTime.Now.ToString("ddMMyyyy")}" + $".{ext}";
-
-            //Define a extensão padrão como .txt
-            //dialog.DefaultExt = ".txt";
-            
-            //define o diretório padrão
-            dialog.InitialDirectory = @"c:\Documents";
-            
-            //restaura o diretorio atual antes de fechar a janela
-            dialog.RestoreDirectory = true;
-
-            //Abre a caixa de dialogo e determina qual botão foi pressionado
-            DialogResult result = dialog.ShowDialog();
-
-            //Se o ousuário pressionar o botão Salvar
-            string error_message = "Não foi possivel completar a transferência.\r\nVerifique o nome e extensão do arquivo.";
-            try
+            if (_event.PathFile.Length > 0)
             {
-                if (result == DialogResult.OK)
+                SaveFileDialog dialog = new SaveFileDialog();
+
+                //define o titulo
+                dialog.Title = "Salvar Arquivo";
+
+                //Define as extensões permitidas
+                dialog.Filter = "All files (*.*)|*.*";
+            
+                //define o indice do filtro
+                dialog.FilterIndex = 0;
+
+                //Atribui um valor vazio ao nome do arquivo
+                string ext = _event.PathFile.Split('.')[1];
+                dialog.FileName = _event.Local.Replace(" ", "_").Trim() + $"_{DateTime.Now.ToString("ddMMyyyy")}" + $".{ext}";
+
+                //Define a extensão padrão como .txt
+                //dialog.DefaultExt = ".txt";
+            
+                //define o diretório padrão
+                dialog.InitialDirectory = @"c:\Documents";
+            
+                //restaura o diretorio atual antes de fechar a janela
+                dialog.RestoreDirectory = true;
+
+                //Abre a caixa de dialogo e determina qual botão foi pressionado
+                DialogResult result = dialog.ShowDialog();
+
+                //Se o ousuário pressionar o botão Salvar
+                string error_message = "Não foi possivel completar a transferência.\r\nVerifique o nome e extensão do arquivo.";
+                try
                 {
-                    if (Action.ExportEventFile(_event, dialog.FileName))
-                    { MessageBox.Show("Transferência CONCLUIDA!"); }
+                    if (result == DialogResult.OK)
+                    {
+                        if (Action.ExportEventFile(_event, dialog.FileName))
+                        { MessageBox.Show("Transferência CONCLUIDA!"); }
+                        else
+                        { MessageBox.Show(error_message); }
+                    }
                     else
-                    { MessageBox.Show(error_message); }
+                    { MessageBox.Show("Transferência CANCELADA!"); }
                 }
-                else
-                { MessageBox.Show("Transferência CANCELADA!"); }
+                catch
+                { MessageBox.Show(error_message); }
             }
-            catch
-            { MessageBox.Show(error_message); }
+            else { MessageBox.Show("Esse evento não tem NENHUM ARQUIVO anexado!"); }
         }
     }
 }

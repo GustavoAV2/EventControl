@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\ControleDeEventos",
-    "\\ControleDeEventos\\Controllers"
+    "\\ControleDeEventos\\Controllers",
+    "\\ControleDeEventos\\Services"
   ],
-  "SelectedNode": "\\ControleDeEventos.sln",
+  "SelectedNode": "\\ControleDeEventos\\Controllers\\Actions.cs",
   "PreviewInSolutionExplorer": false
 }

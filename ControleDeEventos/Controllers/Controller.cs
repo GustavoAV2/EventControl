@@ -57,8 +57,8 @@ namespace ControleDeEventos
         internal int InsertEvent(Events obj_event, List<string> listIds = null)
         {
             string columns = "N_PRICE, N_SIGNAL, DATE_OF_EVENT, DATE_CONTRACT, T_LOCAL, T_TYPE, T_PATH_FILE";
-            string values = $"'{obj_event.Price}','{obj_event.Signal}','{obj_event.DateOfEvent}'," +
-                $"'{obj_event.ContractDate}','{obj_event.Local}','{obj_event.Type}','{obj_event.PathFile}'";
+            string values = $"'{obj_event.Price}','{obj_event.Signal}','{obj_event.DateOfEvent.Date}'," +
+                $"'{obj_event.ContractDate.Date}','{obj_event.Local}','{obj_event.Type}','{obj_event.PathFile}'";
 
             if (listIds != null)
             {

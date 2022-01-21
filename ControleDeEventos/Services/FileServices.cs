@@ -31,14 +31,17 @@ namespace ControleDeEventos
             else 
             { FilePath = Path.Combine(AppPath, $"Files\\{filename}"); }
 
-            FileInfo file = new FileInfo(from_path);
-            FileInfo newFile = file.CopyTo(FilePath);
-            return newFile.Exists;
+            try
+            {
+                FileInfo file = new FileInfo(from_path);
+                FileInfo newFile = file.CopyTo(FilePath);
+                return newFile.Exists;
+            }
+            catch (FileNotFoundException){ return false; }
         }
         public static bool DeleteFile(string path)
         {
             string NameFile = Path.GetFileName(path);
-
             FileInfo file = new FileInfo(NameFile);
             
             if (file.Exists == true)

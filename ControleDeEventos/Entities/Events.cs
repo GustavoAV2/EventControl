@@ -25,7 +25,11 @@ namespace ControleDeEventos
             set { _local = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.Trim()); }
         }
         public string FirstClient
-        { get { return Clients[0].Name; } }
+        { get { 
+               if (Clients.Count > 0)
+               { return Clients[0].Name; }
+                return "";
+            } }
         public string SecondClient
         { get 
             { 

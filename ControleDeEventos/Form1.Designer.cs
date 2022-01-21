@@ -385,10 +385,11 @@ namespace ControleDeEventos
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.ForeColor = System.Drawing.Color.SeaGreen;
             this.lblTotal.Location = new System.Drawing.Point(3, 0);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(74, 29);
+            this.lblTotal.Size = new System.Drawing.Size(89, 36);
             this.lblTotal.TabIndex = 2;
             this.lblTotal.Text = "Total:";
             // 
@@ -396,7 +397,7 @@ namespace ControleDeEventos
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(3, 29);
+            this.label12.Location = new System.Drawing.Point(3, 36);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(0, 7);
             this.label12.TabIndex = 5;
@@ -405,7 +406,7 @@ namespace ControleDeEventos
             // 
             this.lblRestore.AutoSize = true;
             this.lblRestore.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRestore.Location = new System.Drawing.Point(3, 36);
+            this.lblRestore.Location = new System.Drawing.Point(3, 43);
             this.lblRestore.Name = "lblRestore";
             this.lblRestore.Size = new System.Drawing.Size(75, 26);
             this.lblRestore.TabIndex = 3;
@@ -415,7 +416,7 @@ namespace ControleDeEventos
             // 
             this.lblSignal.AutoSize = true;
             this.lblSignal.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSignal.Location = new System.Drawing.Point(3, 62);
+            this.lblSignal.Location = new System.Drawing.Point(3, 69);
             this.lblSignal.Name = "lblSignal";
             this.lblSignal.Size = new System.Drawing.Size(67, 26);
             this.lblSignal.TabIndex = 4;
@@ -1010,6 +1011,7 @@ namespace ControleDeEventos
             this.valueSignal.Name = "valueSignal";
             this.valueSignal.Size = new System.Drawing.Size(347, 29);
             this.valueSignal.TabIndex = 112;
+            this.valueSignal.ValueChanged += new System.EventHandler(this.valueSignal_ValueChanged);
             // 
             // flowLayoutPanel15
             // 
@@ -1043,6 +1045,7 @@ namespace ControleDeEventos
             this.valueTotal.Name = "valueTotal";
             this.valueTotal.Size = new System.Drawing.Size(362, 29);
             this.valueTotal.TabIndex = 113;
+            this.valueTotal.ValueChanged += new System.EventHandler(this.valueTotal_ValueChanged);
             // 
             // groupBox2
             // 

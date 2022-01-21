@@ -1,8 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ControleDeEventos
 {
@@ -44,7 +42,7 @@ namespace ControleDeEventos
         public static bool ValidatTypeFile(string pathFile)
         {
             List<string> ValidExt = new List<string>() { "pdf", "docx", "xlsx", "csv" };
-            string FileName = System.IO.Path.GetFileName(pathFile);
+            string FileName = Path.GetFileName(pathFile);
             string Ext = FileName.Split('.')[1];
 
             foreach (var value in ValidExt)
@@ -53,6 +51,15 @@ namespace ControleDeEventos
                 { return true; }
             }
             return false;
+        }
+        public static bool ValidatIfFileExists(string pathFile)
+        {
+            try
+            {
+                FileInfo file = new FileInfo(pathFile);
+                return file.Exists;
+            }
+            catch (FileNotFoundException) { return false; }
         }
     }
 }
